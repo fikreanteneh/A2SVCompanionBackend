@@ -60,7 +60,7 @@ def push_to_sheet(sheetName, cellReference, gitUrl, attempts, timeTaken, timeTak
 
 
 @app.route("/api/platform", methods=["GET", "OPTIONS"])
-@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def get_platforms():
     platforms = db.Questions.find().distinct("Platform")
 
@@ -70,7 +70,7 @@ def get_platforms():
 
 
 @app.route("/api/platform/<platform>/question", methods=["GET", "OPTIONS"])
-@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def get_questions(platform):
     questions = [
         parse_json(question)
