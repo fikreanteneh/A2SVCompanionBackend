@@ -13,11 +13,12 @@ from google.oauth2.service_account import Credentials
 import gspread
 
 import pymongo
+from pymongo.server_api import ServerApi
 import json
 import re
 from bson import json_util
 
-# load_dotenv('.env')
+load_dotenv('.env')
 
 
 MAIN_SHEETNAME = os.getenv("MAIN_SHEET_NAME")
@@ -38,7 +39,7 @@ gc = gspread.authorize(credentials)
 git_client_id = os.getenv("GITHUB_CLIENT_ID")
 git_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
 
-mongo_client = pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_STRING"))
+mongo_client = pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_STRING"), server_api=ServerApi('1'))
 db = mongo_client[os.getenv("MONGODB_DB_NAME")]
 
 
