@@ -201,5 +201,5 @@ def home():
     return jsonify(f"Attached to sheet '{os.getenv('MAIN_SHEET_NAME')}'")
 
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
