@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+from flask_restful import reqparse, abort, Api, Resource
 import requests
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
@@ -44,7 +45,8 @@ db = mongo_client[os.getenv("MONGODB_DB_NAME")]
 
 
 app = Flask(__name__)
-CORS(app, support_credentials=True)
+cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
+api = Api(app)
 
 
 def parse_json(data):

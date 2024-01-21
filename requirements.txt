@@ -6,6 +6,7 @@ colorama
 dnspython
 Flask
 Flask-Cors
+Flask-RESTful
 google-auth
 google-auth-oauthlib
 gspread
@@ -16,7 +17,7 @@ MarkupSafe
 oauthlib
 pyasn1
 pyasn1-modules
-pymongo
+pymongof
 python-dotenv
 requests
 requests-oauthlib
