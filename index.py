@@ -85,7 +85,7 @@ def get_questions(platform):
 
 
 @app.route("/api", methods=["POST", "OPTIONS"])
-@cross_origin(supports_credentials=True)
+# @cross_origin(supports_credentials=True)
 def api():
     json = request.json
 
