@@ -7,9 +7,6 @@ dnspython
 Flask
 Flask-Cors
 Flask-RESTful
-google-auth
-google-auth-oauthlib
-gspread
 idna
 itsdangerous
 Jinja2
