@@ -21,7 +21,7 @@ from bson import json_util
 MAIN_SHEETNAME = os.getenv("MAIN_SHEET_NAME")
 git_client_id = os.getenv("GITHUB_CLIENT_ID")
 git_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
-mongo_client = pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_STRING"), server_api=ServerApi('1'))
+mongo_client = pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_STRING"), server_api=ServerApi('1'), connectTimeoutMS=20000)
 db = mongo_client[os.getenv("MONGODB_DB_NAME")]
 app = Flask(__name__)
 cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
@@ -34,8 +34,7 @@ def push_to_sheet(sheetName, studentName, gitUrl, attempts, timeTaken, questionC
         f"https://script.google.com/macros/s/{os.getenv('SHEET_APPSCRIPT_DEPLOYMENT')}/exec"
         + f"?sheetName={sheetName}&studentName={studentName}&gitUrl={gitUrl}&attempts={attempts}&timeTaken={timeTaken}&questionColumn={questionColumn}&timespentColumn={timespentColumn}"
     )
-    requests.get(url)
-
+    requests.get(url, timeout=100)
 
 @app.route("/api/platform", methods=["GET", "OPTIONS"])
 # @cross_origin(supports_credentials=True)
