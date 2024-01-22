@@ -6,6 +6,9 @@ colorama
 dnspython
 Flask
 Flask-Cors
+google-auth
+google-auth-oauthlib
+gspread
 idna
 itsdangerous
 Jinja2

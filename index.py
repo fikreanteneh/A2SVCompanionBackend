@@ -16,7 +16,7 @@ import json
 import re
 from bson import json_util
 
-load_dotenv('.env')
+# load_dotenv('.env')
 
 MAIN_SHEETNAME = os.getenv("MAIN_SHEET_NAME")
 git_client_id = os.getenv("GITHUB_CLIENT_ID")
@@ -166,5 +166,5 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#     app.run()
