@@ -6,7 +6,6 @@ colorama
 dnspython
 Flask
 Flask-Cors
-Flask-RESTful
 idna
 itsdangerous
 Jinja2
@@ -14,7 +13,7 @@ MarkupSafe
 oauthlib
 pyasn1
 pyasn1-modules
-pymongof
+pymongo
 python-dotenv
 requests
 requests-oauthlib
