@@ -6,9 +6,6 @@ colorama
 dnspython
 Flask
 Flask-Cors
-google-auth
-google-auth-oauthlib
-gspread
 idna
 itsdangerous
 Jinja2
@@ -23,3 +20,4 @@ requests-oauthlib
 rsa
 urllib3
 Werkzeug
+Flask-RESTful
