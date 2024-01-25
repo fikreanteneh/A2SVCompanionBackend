@@ -1,4 +1,5 @@
 import cors from 'cors';
+import url from 'url';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { columnToLetter } from './utils.js';
@@ -37,6 +38,7 @@ app.get('/api/platform/:platform/question', async (req, res) => {
 
 app.get('/authenticate', async (req, res) => {
     const githubAuthCode = req.query.code;
+    console.log(githubAuthCode)
 
     const response = await fetch('https://github.com/login/oauth/access_token', {
         method: 'POST',
