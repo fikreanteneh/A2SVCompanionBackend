@@ -21,4 +21,4 @@ rsa
 urllib3
 Werkzeug
 Flask-RESTful
-gunicorn==19.7.1
+gunicorn
