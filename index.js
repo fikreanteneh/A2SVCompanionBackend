@@ -1,13 +1,13 @@
 import cors from 'cors';
 import express from 'express';
 import { MongoClient } from 'mongodb';
-import { columnToLetter, envs } from './utils.js';
+import { columnToLetter } from './utils.js';
 
-const MAIN_SHEETNAME = envs.MAIN_SHEET_NAME;
-const gitClientId = envs.GITHUB_CLIENT_ID;
-const gitClientSecret = envs.GITHUB_CLIENT_SECRET;
+const MAIN_SHEETNAME = process.env.MAIN_SHEET_NAME;
+const gitClientId = process.env.GITHUB_CLIENT_ID;
+const gitClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-const mongoClient = new MongoClient(envs.MONGODB_CONNECTION_STRING);
+const mongoClient = new MongoClient(process.env.MONGODB_CONNECTION_STRING);
 let db;
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.json({ message: `Attached to sheet '${envs.MAIN_SHEET_NAME}'` });
+    res.json({ message: `Attached to sheet '${process.env.MAIN_SHEET_NAME}'` });
 });
 
 app.get('/api/platform', async (req, res) => {
@@ -109,7 +109,7 @@ app.post('/api', async (req, res) => {
     const attempts = json.attempts;
     const timeTaken = json.timeTaken;
 
-    const url = `https://script.google.com/macros/s/${envs.SHEET_APPSCRIPT_DEPLOYMENT}/exec?sheetName=${sheetName}&studentName=${studentName}&gitUrl=${gitUrl}&attempts=${attempts}&timeTaken=${timeTaken}&questionColumn=${questionColumn}&timespentColumn=${timespentColumn}`;
+    const url = `https://script.google.com/macros/s/${process.env.SHEET_APPSCRIPT_DEPLOYMENT}/exec?sheetName=${sheetName}&studentName=${studentName}&gitUrl=${gitUrl}&attempts=${attempts}&timeTaken=${timeTaken}&questionColumn=${questionColumn}&timespentColumn=${timespentColumn}`;
 
     const response = await fetch(url);
     const data = await response.json();
@@ -118,16 +118,14 @@ app.post('/api', async (req, res) => {
 
 
 const starter = async () => { 
-    if (!envs.MONGODB_CONNECTION_STRING) {
+    if (!process.env.MONGODB_CONNECTION_STRING) {
         throw new Error("MONGODB_CONNECTION_STRING not found");
     }
     await mongoClient.connect();
-    db = mongoClient.db(envs.MONGODB_DB_NAME);
-    console.log(db)
+    db = mongoClient.db(process.env.MONGODB_DB_NAME);
     app.listen(3000, () => {
         console.log("Server started on port 3000");
     });
 }
-
 
 starter();
