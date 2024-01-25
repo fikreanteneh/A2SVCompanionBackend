@@ -34,7 +34,7 @@ def push_to_sheet(sheetName, studentName, gitUrl, attempts, timeTaken, questionC
         f"https://script.google.com/macros/s/{os.getenv('SHEET_APPSCRIPT_DEPLOYMENT')}/exec"
         + f"?sheetName={sheetName}&studentName={studentName}&gitUrl={gitUrl}&attempts={attempts}&timeTaken={timeTaken}&questionColumn={questionColumn}&timespentColumn={timespentColumn}"
     )
-    requests.get(url, timeout=100)
+    requests.get(url)
 
 @app.route("/api/platform", methods=["GET", "OPTIONS"])
 # @cross_origin(supports_credentials=True)
@@ -103,15 +103,26 @@ def api():
     questionColumn = column_to_letter(question["Column"])
     timespentColumn = column_to_letter(question["Column"] + 1)
 
-    push_to_sheet( 
-        question["Sheet"], 
-        json["studentName"], 
-        json["gitUrl"],
-        json["attempts"],
-        json["timeTaken"],
-        questionColumn,
-        timespentColumn,
+    sheetName = question["Sheet"]
+    studentName = json["studentName"]
+    gitUrl = json["gitUrl"]
+    attempts = json["attempts"]
+    timeTaken = json["timeTaken"]
+
+    # push_to_sheet( 
+    #     question["Sheet"], 
+    #     json["studentName"], 
+    #     json["gitUrl"],
+    #     json["attempts"],
+    #     json["timeTaken"],
+    #     questionColumn,
+    #     timespentColumn,
+    # )
+    url = (
+        f"https://script.google.com/macros/s/{os.getenv('SHEET_APPSCRIPT_DEPLOYMENT')}/exec"
+        + f"?sheetName={sheetName}&studentName={studentName}&gitUrl={gitUrl}&attempts={attempts}&timeTaken={timeTaken}&questionColumn={questionColumn}&timespentColumn={timespentColumn}"
     )
+    requests.get(url)
     return jsonify({"status": "OK"})
 
 
@@ -165,5 +176,5 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
-# if __name__ == "__main__":
-#     app.run()
+if __name__ == "__main__":
+    app.run()
