@@ -1,10 +1,10 @@
 import cors from 'cors';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { columnToLetter } from './utils.js';
 
-dotenv.config();
+// dotenv.config();
 
 const MAIN_SHEETNAME = process.env.MAIN_SHEET_NAME;
 const gitClientId = process.env.GITHUB_CLIENT_ID;
@@ -123,6 +123,10 @@ app.post('/api', async (req, res) => {
 
 
 const starter = async () => { 
+    if (!process.env.MONGODB_CONNECTION_STRING) {
+        console.log("MONGODB_CONNECTION_STRING not found in .env");
+        process.exit(1);
+    }
     await mongoClient.connect();
     db = mongoClient.db(process.env.MONGODB_DB_NAME);
     console.log(db)
