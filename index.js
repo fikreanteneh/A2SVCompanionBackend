@@ -124,8 +124,7 @@ app.post('/api', async (req, res) => {
 
 const starter = async () => { 
     if (!process.env.MONGODB_CONNECTION_STRING) {
-        console.log("MONGODB_CONNECTION_STRING not found in .env");
-        process.exit(1);
+        throw new Error("MONGODB_CONNECTION_STRING not found");
     }
     await mongoClient.connect();
     db = mongoClient.db(process.env.MONGODB_DB_NAME);
