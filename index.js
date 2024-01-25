@@ -2,6 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { columnToLetter } from './utils.js';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const MAIN_SHEETNAME = process.env.MAIN_SHEET_NAME;
 const gitClientId = process.env.GITHUB_CLIENT_ID;
