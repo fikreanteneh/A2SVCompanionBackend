@@ -122,8 +122,7 @@ def api():
         f"https://script.google.com/macros/s/{os.getenv('SHEET_APPSCRIPT_DEPLOYMENT')}/exec"
         + f"?sheetName={sheetName}&studentName={studentName}&gitUrl={gitUrl}&attempts={attempts}&timeTaken={timeTaken}&questionColumn={questionColumn}&timespentColumn={timespentColumn}"
     )
-    requests.get(url)
-    return jsonify({"status": "OK"})
+    return requests.get(url).json()
 
 
 @app.route("/authenticate")
