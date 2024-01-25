@@ -26,8 +26,9 @@ db = mongo_client[os.getenv("MONGODB_DB_NAME")]
 app = Flask(__name__)
 # cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
 # api = Api(app)
-# def parse_json(data):
-#     return json.loads(json_util.dumps(data))
+
+def parse_json(data):
+    return json.loads(json_util.dumps(data))
 
 def push_to_sheet(sheetName, studentName, gitUrl, attempts, timeTaken, questionColumn, timespentColumn):
     url = (
