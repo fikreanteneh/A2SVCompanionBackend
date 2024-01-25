@@ -10,7 +10,7 @@ const MAIN_SHEETNAME = process.env.MAIN_SHEET_NAME;
 const gitClientId = process.env.GITHUB_CLIENT_ID;
 const gitClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-const mongoClient = new MongoClient(process.env.MONGODB_CONNECTION_STRING);
+
 let db;
 
 const app = express();
@@ -121,10 +121,11 @@ app.post('/api', async (req, res) => {
 
 
 const starter = async () => { 
+    console.log("Connecting to MongoDB" + process.env.MONGODB_CONNECTION_STRING);
     if (!process.env.MONGODB_CONNECTION_STRING) {
         throw new Error("MONGODB_CONNECTION_STRING not found");
     }
-    console.log("Connecting to MongoDB" + process.env.MONGODB_CONNECTION_STRING);
+    const mongoClient = new MongoClient(process.env.MONGODB_CONNECTION_STRING);
 
     await mongoClient.connect();
     db = mongoClient.db(process.env.MONGODB_DB_NAME);
