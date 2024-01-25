@@ -124,6 +124,8 @@ const starter = async () => {
     if (!process.env.MONGODB_CONNECTION_STRING) {
         throw new Error("MONGODB_CONNECTION_STRING not found");
     }
+    console.log("Connecting to MongoDB" + process.env.MONGODB_CONNECTION_STRING);
+
     await mongoClient.connect();
     db = mongoClient.db(process.env.MONGODB_DB_NAME);
     app.listen(3000, () => {
