@@ -7,7 +7,7 @@ import os
 from flask_cors import CORS, cross_origin
 from utils import column_to_letter
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from datetime import datetime
 
 import pymongo
