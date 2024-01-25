@@ -24,10 +24,10 @@ git_client_secret = os.getenv("GITHUB_CLIENT_SECRET")
 mongo_client = pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_STRING"), server_api=ServerApi('1'), connectTimeoutMS=20000)
 db = mongo_client[os.getenv("MONGODB_DB_NAME")]
 app = Flask(__name__)
-cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
-api = Api(app)
-def parse_json(data):
-    return json.loads(json_util.dumps(data))
+# cors = CORS(app, resources={r"*": {"origins": "*"}}, supports_credentials=True)
+# api = Api(app)
+# def parse_json(data):
+#     return json.loads(json_util.dumps(data))
 
 def push_to_sheet(sheetName, studentName, gitUrl, attempts, timeTaken, questionColumn, timespentColumn):
     url = (
@@ -168,10 +168,10 @@ def authenticate():
 def home():
     return jsonify(f"Attached to sheet '{os.getenv('MAIN_SHEET_NAME')}'")
 
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-    return response
+# @app.after_request
+# def after_request(response):
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+#     return response
 
