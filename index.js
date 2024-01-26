@@ -13,6 +13,8 @@ const gitClientSecret = process.env.GITHUB_CLIENT_SECRET;
 let db;
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
