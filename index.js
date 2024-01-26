@@ -1,10 +1,8 @@
-import cors from 'cors';
-import url from 'url';
+import * as dotenv from 'dotenv';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { columnToLetter } from './utils.js';
-import * as dotenv from 'dotenv';
-
+// import ejs from 'ejs';
 dotenv.config();
 
 const MAIN_SHEETNAME = process.env.MAIN_SHEET_NAME;
@@ -15,9 +13,7 @@ const gitClientSecret = process.env.GITHUB_CLIENT_SECRET;
 let db;
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     res.json({ message: `Attached to sheet '${process.env.MAIN_SHEET_NAME}'` });
@@ -38,7 +34,6 @@ app.get('/api/platform/:platform/question', async (req, res) => {
 
 app.get('/authenticate', async (req, res) => {
     const githubAuthCode = req.query.code;
-    console.log(githubAuthCode)
 
     const response = await fetch('https://github.com/login/oauth/access_token', {
         method: 'POST',
@@ -52,12 +47,20 @@ app.get('/authenticate', async (req, res) => {
         })
     });
 
-    if (response.ok) {
-        const parsedResponse = url.parse(`?${await response.text()}`);
-        const accessToken = querystring.parse(parsedResponse.query)["access_token"][0].trim();
-        res.render('index', { access_token: accessToken, success: true, message: "Successfully authenticated!" });
+    const data = await response.text()
+    const [key, access_token] = data.split('&')[0].split('=')
+    if (key === "access_token") {       
+        return res.render("index", {
+            access_token: access_token,
+            success: true,
+            message: "Successfully authenticated!"
+        })
     } else {
-        res.render('index', { access_token: null, success: false, message: "Authentication failed!" });
+        return res.render("index", {
+            access_token: null,
+            success: false,
+            message: "Access token not found in GitHub response. Try again!"
+        });
     }
 });
 
@@ -123,7 +126,7 @@ app.post('/api', async (req, res) => {
 
 
 const starter = async () => { 
-    console.log("Connecting to MongoDB" + process.env.MONGODB_CONNECTION_STRING);
+    console.log("Connecting to MongoDB" );
     if (!process.env.MONGODB_CONNECTION_STRING) {
         throw new Error("MONGODB_CONNECTION_STRING not found");
     }

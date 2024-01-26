@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .success {
+            color: #00ff00;
+        }
+        .failure {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <input type='hidden' value='<%= access_token %>' id='access_token'>
+
+    <% if (success) { %>
+        <h1 class="success"><%= message %></h1>
+    <% } else { %>
+        <div>
+            <h1 class="failure"><%= message %></h1>
+            <p>Please, try again.</p>
+        </div>
+    <% } %>
+</body>
+</html>
