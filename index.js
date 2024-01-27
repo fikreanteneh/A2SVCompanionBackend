@@ -34,6 +34,24 @@ app.get('/api/platform/:platform/question', async (req, res) => {
     res.json(questions);
 });
 
+
+app.post('/api/student', async (req, res) => {
+    const students = req.body.data;
+    for (let student of students) {
+        if (!student.Email || !student.Name) {
+            res.status(400).send("Some Students Doesn't Have Email or Name.");
+            return;        }
+    }
+    let promises = students.map(student => db.collection('People').updateOne(
+        { Email: student.Email }, 
+        { $set: student },
+        { upsert: true }
+    ));
+    let existingStudents = await Promise.all(promises);
+    res.json({ "Students": existingStudents });
+});
+
+
 app.get('/authenticate', async (req, res) => {
     const githubAuthCode = req.query.code;
 
@@ -85,30 +103,34 @@ app.post('/api', async (req, res) => {
         }
     }
 
-    const student = await db.collection('People').findOne({ Name: json.studentName });
+    const student = await db.collection('People').findOne({ Email: json.studentName });
     const question = await db.collection('Questions').findOne({ URL: json.questionUrl });
     if (!student) {
-        res.status(400).send('Student not found');
+        res.status(400).send('Student not found in database');
         return;
     }
     if (!question) {
-        res.status(400).send('Question not found');
+        res.status(400).send('Question not found in database');
         return;
     }
 
     const interaction = {
         Column: question.Column,
         Group: student.Group,
-        ID: `${student.Name} | ${question.Column}`,
+        ID: `${student.Email} | ${question.Sheet} | ${question.Column}`,
         Sheet: question.Sheet,
-        'Number of Attempts': json.attempts,
+        NumberOfAttempts: json.attempts,
         Person: student.Name,
         Question_fkey: question.ID,
-        'Time Spent': json.timeTaken,
+        TimeSpent: json.timeTaken,
         update_timestamp: new Date(),
     };
 
-    await db.collection('Interactions').insertOne(interaction);
+    await db.collection('Interactions').updateOne(
+        { ID: `${student.Email} | ${question.Sheet} | ${question.Column}`}, 
+        { $set: interaction },
+        { upsert: true }
+    );
 
     const questionColumn = columnToLetter(question.Column);
     const timespentColumn = columnToLetter(question.Column + 1);
